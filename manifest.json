@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "JSON Formatter",
+  "version": "1.0",
+  "description": "A powerful JSON formatter and converter",
+  "permissions": [
+    "storage",
+    "sidePanel",
+    "tabs"
+  ],
+  "side_panel": {
+    "default_path": "src/popup/popup.html"
+  },
+  "action": {
+    "default_title": "Open JSON Formatter",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "src/icons/icon16.png",
+      "48": "src/icons/icon48.png",
+      "128": "src/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "src/icons/icon16.png",
+    "48": "src/icons/icon48.png",
+    "128": "src/icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "src/background.ts",
+    "type": "module"
+  }
+} 

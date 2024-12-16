@@ -1,81 +1,88 @@
-# JSON Formatter - the original
+# JSON 格式化工具
 
-Chrome extension that auto-formats JSON when you view it in a browser tab.
+一款功能强大的 Chrome 扩展，提供 JSON 数据的格式化、验证和操作，具有现代直观的界面设计。
 
-## Features
+## ✨ 主要特性
 
-- **Fast**, even on very long JSON pages
-- Dark mode
-- Syntax highlighting
-- Collapsible trees, with indent guides
-- Clickable URLs
-- Negligible performance impact on non-JSON pages (less than 1 millisecond)
-- Works on any valid JSON page – URL doesn't matter
-- Buttons for toggling between raw and parsed JSON
-- ~~Parsed JSON is exported as a global variable, `json`, so you can inspect it in the console~~*
+### 核心功能
+- 🚀 **高性能** - 即使处理大型 JSON 文件也能保持快速响应
+- 🌗 **明暗主题** - 优雅的主题切换，适应不同环境下的阅读需求
+- 🎨 **语法高亮** - 美观的 JSON 元素色彩标注
+- 🌳 **树形视图** - 可折叠的 JSON 结构，带有缩进指引
+- 🔗 **可点击链接** - 自动检测并激活 URL 链接
+- ⚡ **零性能影响** - 对非 JSON 页面几乎无性能影响
 
-> *Typing `json` the in console is not working since Manifest v3. If you need a workaround, paste this snippet into the console:
->
-> ```js
-> json = JSON.parse(document.getElementById("jsonFormatterRaw").querySelector("pre").innerText)
-> ```
+### JSON 工具集
+- 📝 **格式化** - 美化 JSON，添加适当的缩进和空格
+- 📦 **压缩** - 移除空白字符，压缩 JSON 数据
+- 🔄 **字符串转换** - 将 JSON 转换为字符串表示
+- 📋 **快速复制** - 一键复制格式化或原始 JSON
+- 🗑️ **清空内容** - 快速清除编辑器内容
+- 📜 **历史记录** - 追踪最近的 JSON 操作记录
 
-**Some JSON documents for testing it on:**
-https://callumlocke.github.io/json-formatter/
+### 编辑器特性
+- 🔍 **实时验证** - 即时反馈 JSON 语法错误
+- ✨ **简洁界面** - 现代化、无干扰的编辑体验
+- 🎯 **错误提示** - 清晰标注 JSON 语法错误位置
+- 📱 **响应式设计** - 完美适配各种屏幕尺寸
 
-## Installation
+## 🚀 安装方法
 
-**Option 1 (recommended)** – Install it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/bcjindcccaagfpapjjmafapmmgkkhgoa).
+### Chrome 应用商店安装（推荐）
+1. 访问 [Chrome 网上应用店](https://chrome.google.com/webstore/detail/json-formatter/your-extension-id)
+2. 点击"添加至 Chrome"
+3. 确认安装
 
-**Option 2** – Install it from source (see below).
+### 手动安装（开发版）
+1. 克隆仓库
+```bash
+git clone https://github.com/yourusername/json-formatter.git
+cd json-formatter
+```
 
-### Development
+2. 安装依赖
+```bash
+pnpm install
+```
 
-**Requirements:** [Deno](https://deno.land/) (and [Node](https://nodejs.org/en/) for now).
+3. 构建扩展
+```bash
+deno task build
+```
 
-**Initial setup:**
+4. 在 Chrome 中加载
+- 打开 Chrome，访问 `chrome://extensions`
+- 启用"开发者模式"
+- 点击"加载已解压的扩展程序"
+- 选择构建生成的 `dist` 文件夹
 
-- Clone repo
-- Run `pnpm i` to get TypeScript typings for chrome (or use `npm i` if you prefer)
-- Optional: if using VSCode and you need to mess with the Deno build scripts, install the official Deno plugin and set `"deno.enablePaths": ["tasks"]`.
+## 🛠️ 开发指南
 
-**To build it:**
+### 环境要求
+- [Deno](https://deno.land/)
+- [Node.js](https://nodejs.org/)
+- [pnpm](https://pnpm.io/)（推荐）或 npm
 
-- Run `deno task build`
+### 开发命令
+- `deno task build` - 构建扩展
+- `deno task dev` - 开发模式（监听文件变化）
+- `pnpm test` - 运行测试
 
-**To build and rebuild whenever files change:**
+## 🤝 参与贡献
 
-- Run `deno task dev`
+欢迎提交 Pull Request 来改进这个项目！
 
-**To install your local build to Chrome**
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交改动 (`git commit -m '添加某个特性'`)
+4. 推送到远程分支 (`git push origin feature/AmazingFeature`)
+5. 提交 Pull Request
 
-- Open Chrome and go to `chrome://extensions`
-- Enable "Developer mode",
-- Click "Load unpacked",
-- Select the `dist` folder you built above.
+## 📝 开源协议
 
-## FAQ
+本项目采用 MIT 协议 - 详见 [LICENSE](LICENSE) 文件
 
-### Why are large numbers not displayed accurately?
+## 🙏 致谢
 
-This is a [limitation of JavaScript](http://www.ecma-international.org/ecma-262/5.1/#sec-15.7.3.2) and therefore a limitation of JSON as interpreted by your web browser.
-
-- Anything above `Number.MAX_SAFE_INTEGER` (`2^53 - 1` or `9007199254740991`) is adjusted down to that number.
-- Anything below `Number.MIN_SAFE_INTEGER` (`-2^53 + 1` or `-9007199254740991`) is adjusted up to that number.
-- Extremely precise floating point numbers are rounded to 16 digits.
-
-It's not JSON Formatter doing this, it's the native `JSON.parse` in V8. JSON Formatter shows you the **parsed** values, exactly the same as what you'll see after loading the JSON in JavaScript.
-
-If your API endpoint really needs to represent numbers outside JavaScript's safe range, it should **quote them as strings**.
-
-### Why are object keys sometimes in the wrong order?
-
-What you see in JSON Formatter is a representation of the **parsed** object/array. It's the same order you'll get with `Object.keys( JSON.parse(json) )` in JavaScript.
-
-Historically, the JavaScript standard explicitly stated that object keys can be iterated in any order, and V8 took advantage of this by moving numeric string keys (like `"1"` or `"99999"`) to the top to facilitate a small performance optimisation. This V8 implementation detail has since become standardised.
-
-##### But I just want to see exactly what the server spits out
-
-For now, your best option is to just use the "Raw" button to see the raw JSON. This is what the server sent. The "Parsed" buttons represents what you'll get from `JSON.parse`.
-
-In future JSON Formatter might switch from using `JSON.parse` to a custom parser (if performance allows) in order to detect when a value has been 'changed' by parsing and show an appropriate warning.
+- 图标来自 [Feather Icons](https://feathericons.com/)
+- 使用 [React](https://reactjs.org/) 和 [TypeScript](https://www.typescriptlang.org/) 构建
