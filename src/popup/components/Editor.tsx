@@ -118,7 +118,30 @@ const Editor = forwardRef<EditorRef, EditorProps>(({ theme, jsonContent, onConte
             setError(null);
         } catch (e) {
             setParsedJson(null);
-            setError('Invalid JSON');
+            if (e instanceof SyntaxError) {
+                // Extract position from error message
+                const match = e.message.match(/at position (\d+)/);
+                if (match) {
+                    const position = parseInt(match[1], 10);
+                    // Find line and column number
+                    const lines = value.slice(0, position).split('\n');
+                    const line = lines.length;
+                    const column = lines[lines.length - 1].length + 1;
+                    
+                    // Get the problematic line
+                    const allLines = value.split('\n');
+                    const errorLine = allLines[line - 1];
+                    
+                    // Create pointer to the error position
+                    const pointer = ' '.repeat(column - 1) + '^';
+                    
+                    setError(`JSON Syntax Error at line ${line}, column ${column}:\n\n${errorLine}\n${pointer}\n\n${e.message}`);
+                } else {
+                    setError(`JSON Syntax Error: ${e.message}`);
+                }
+            } else {
+                setError('Invalid JSON');
+            }
         }
     }, []);
 
@@ -162,21 +185,29 @@ const Editor = forwardRef<EditorRef, EditorProps>(({ theme, jsonContent, onConte
     const handleStringify = async () => {
         try {
             let parsed;
+            const input = jsonInput;
             
             // First try to parse if it's a JSON object
             try {
-                parsed = JSON.parse(jsonInput);
+                parsed = JSON.parse(input);
+                // Convert the parsed JSON to a JSON string representation
+                const stringified = JSON.stringify(JSON.stringify(parsed));
+                setParsedJson(stringified);
+                updateStatus('Converted to JSON string successfully');
+                // Only save to history if this is a new conversion
+                if (input !== history[0]?.content) {
+                    await saveToHistory(stringified);
+                }
             } catch {
-                // If not a valid JSON, treat input as a regular string
-                parsed = jsonInput;
+                // If not a valid JSON, wrap the input as a string
+                const stringified = JSON.stringify(input);
+                setParsedJson(stringified);
+                updateStatus('Converted to string successfully');
+                // Only save to history if this is a new conversion
+                if (input !== history[0]?.content) {
+                    await saveToHistory(stringified);
+                }
             }
-            
-            // Convert to JSON string with proper escaping
-            const stringified = JSON.stringify(parsed);
-            setJsonInput(stringified);
-            setParsedJson(stringified);
-            updateStatus('Converted to JSON string successfully');
-            await saveToHistory(stringified);
         } catch (e) {
             updateStatus('Unable to convert to string', true);
         }

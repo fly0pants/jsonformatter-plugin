@@ -424,14 +424,53 @@ textarea.has-error {
 
 .error-message {
     position: absolute;
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
     padding: 12px;
     border-radius: 6px;
     background-color: var(--error-bg);
     border: 1px solid var(--error-color);
     z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* In two-column layout, show error in right panel */
+@media (min-width: 769px) {
+    .error-message {
+        top: 16px;
+        right: 16px;
+        width: calc(50% - 32px);
+        max-width: none;
+    }
+}
+
+/* In single-column layout, show error at bottom */
+@media (max-width: 768px) {
+    .error-message {
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
+        max-width: none;
+    }
+}
+
+.error-title {
+    color: var(--error-color);
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.error-details {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 8px;
+    background: var(--bg-color);
+    border-radius: 4px;
+    margin-top: 4px;
+    border: 1px solid var(--border-color);
 }
 
 .json-preview {
@@ -560,6 +599,10 @@ textarea.has-error {
     font-size: 12px;
     white-space: pre-wrap;
     word-break: break-word;
+    padding: 8px;
+    background: var(--bg-color);
+    border-radius: 4px;
+    margin-top: 4px;
 }
 
 /* Status Info */

@@ -1,0 +1,169 @@
+/* 基础变量 */
+:root {
+    --primary: #3498db;
+    --primary-hover: #2980b9;
+    --gradient-start: #3498db;
+    --gradient-end: #2ecc71;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+}
+
+/* 暗色模式变量 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* 全局样式 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+}
+
+/* 英雄区域样式 */
+.hero {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+    padding: 6rem 2rem;
+    margin: -2rem -2rem 2rem -2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(30deg);
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    opacity: 0.9;
+    animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+/* 特性卡片样式 */
+.feature-card {
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    animation: fadeInUp 0.8s ease-out;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-shadow);
+}
+
+.feature-icon {
+    display: inline-block;
+    padding: 1rem;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+}
+
+/* 按钮样式 */
+.cta-button {
+    background: white;
+    color: var(--primary);
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    box-shadow: var(--card-shadow);
+    animation: fadeInUp 0.8s ease-out 0.4s backwards;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background: white;
+    color: var(--primary-hover);
+}
+
+/* 快捷键部分样式 */
+.keyboard-shortcuts {
+    background: rgba(52, 152, 219, 0.05);
+    padding: 2rem;
+    border-radius: 12px;
+    margin: 3rem 0;
+}
+
+kbd {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 0 #ddd;
+}
+
+/* 隐私安全部分样式 */
+.privacy {
+    border-left: 4px solid var(--primary);
+    padding-left: 2rem;
+    margin: 3rem 0;
+}
+
+/* 页脚样式 */
+footer {
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 4rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+footer a {
+    color: var(--primary);
+    text-decoration: none;
+    margin: 0 1rem;
+}
+
+footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* 动画关键帧 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+    }
+    
+    .keyboard-shortcuts, .privacy {
+        padding: 1.5rem;
+    }
+} 
